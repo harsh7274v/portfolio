@@ -4,6 +4,7 @@ import "./globals.css";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import SmoothScroll from "@/components/ScrollSmooth";
+import { ReactQueryProvider } from "@/components/ReactQueryProvider";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -28,9 +29,11 @@ export default function RootLayout({
     return (
         <html lang="en" className="scroll-smooth" suppressHydrationWarning>
             <body>
-                <ThemeProvider>
-                    <SmoothScroll>{children}</SmoothScroll>
-                </ThemeProvider>
+                <ReactQueryProvider>
+                    <ThemeProvider>
+                        <SmoothScroll>{children}</SmoothScroll>
+                    </ThemeProvider>
+                </ReactQueryProvider>
             </body>
         </html>
     );

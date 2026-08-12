@@ -55,6 +55,14 @@ function Navbar() {
                             </a>
                         </li>
                         <li>
+                            <a
+                                href="/blog"
+                                className="list-none cursor-pointer text-accent font-medium hover:underline transition-colors duration-[100ms] ease-in text-base lg:text-lg tracking-tight"
+                            >
+                                Blog
+                            </a>
+                        </li>
+                        <li>
                             <button
                                 className="h-6 w-6 rounded-full cursor-pointer hover:scale-110 flex justify-center items-center transition-transform duration-[200ms] ease-in"
                                 onClick={() =>

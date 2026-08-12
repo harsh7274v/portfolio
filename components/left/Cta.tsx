@@ -1,11 +1,40 @@
 "use client";
 import React from "react";
-import { PaperPlaneTiltIcon, ReadCvLogoIcon } from "@phosphor-icons/react";
+import { PaperPlaneTiltIcon, ReadCvLogoIcon, BookBookmarkIcon } from "@phosphor-icons/react";
 
 function Cta() {
     return (
         <div className="mx-4 lg:mx-8 mt-6 mb-2">
-            <div className="flex flex-wrap items-center justify-center gap-6">
+            <div className="flex flex-wrap items-center justify-center gap-4">
+                <a
+                    href="/blog"
+                    className="
+                        group
+                        flex items-center gap-2
+                        rounded-xl
+                        border border-dashed border-accent/50
+                        bg-cta text-accent font-medium
+                        px-4 py-2.5
+                        transition-all duration-300
+                        hover:scale-[1.02]
+                        active:translate-y-0
+                        cursor-pointer
+                        relative
+                    "
+                >
+                    <div
+                        className="absolute inset-0 rounded-xl pointer-events-none opacity-10"
+                        style={{
+                            backgroundImage: "url('/Noise.jpg')",
+                            backgroundRepeat: "repeat",
+                        }}
+                    />
+                    <BookBookmarkIcon
+                        size={20}
+                        className="transition-transform duration-300 group-hover:rotate-12"
+                    />
+                    <span>Read Blog</span>
+                </a>
                 <a
                     href="/harsh.pdf"
                     target="_blank"
@@ -16,16 +45,14 @@ function Cta() {
                         rounded-xl
                         border border-dashed
                         bg-cta
-                        px-5 py-3
+                        px-4 py-2.5
                         transition-all duration-300
                         hover:scale-[1.02]
                         active:translate-y-0
-                        active:shadow-none
                         cursor-pointer
                         relative
                     "
                 >
-                    {/* Noise Overlay */}
                     <div
                         className="absolute inset-0 rounded-xl pointer-events-none opacity-10"
                         style={{
@@ -34,7 +61,7 @@ function Cta() {
                         }}
                     />
                     <ReadCvLogoIcon
-                        size={24}
+                        size={20}
                         className="
                             transition-transform
                             duration-300
@@ -42,7 +69,7 @@ function Cta() {
                             group-hover:rotate-3
                         "
                     />
-                    <span>View Resume</span>
+                    <span>Resume</span>
                 </a>
                 <a
                     href="mailto:harshvardhan7274@gmail.com"
@@ -52,16 +79,14 @@ function Cta() {
                         rounded-xl
                         border border-dashed
                         bg-cta
-                        px-5 py-3
+                        px-4 py-2.5
                         transition-all duration-300
                         hover:scale-[1.02]
                         active:translate-y-0
-                        active:shadow-none
                         cursor-pointer
                         relative
                     "
                 >
-                    {/* Noise Overlay */}
                     <div
                         className="absolute inset-0 rounded-xl pointer-events-none opacity-10"
                         style={{
