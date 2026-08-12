@@ -44,11 +44,74 @@
 
 }
 
-
-body{
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Dev.to HTML & Mobile Article Responsive Overrides */
+.article-body-html {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
 
+.article-body-html * {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+.article-body-html pre,
+.article-body-html code,
+.article-body-html .highlight,
+.article-body-html .highlight pre,
+.article-body-html div[class*="highlight"] {
+    background-color: var(--surface) !important;
+    color: var(--foreground) !important;
+    overflow-x: auto !important;
+    word-break: normal !important;
+    white-space: pre !important;
+    border-radius: 1.25rem !important;
+    border: 1px dashed var(--border) !important;
+    padding: 1rem !important;
+    margin-top: 1rem !important;
+    margin-bottom: 1rem !important;
+    max-width: 100% !important;
+}
+
+.article-body-html img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 1.25rem !important;
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
+    object-fit: cover !important;
+}
+
+.article-body-html table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    border-collapse: collapse !important;
+}
+
+.article-body-html p,
+.article-body-html li,
+.article-body-html span,
+.article-body-html h1,
+.article-body-html h2,
+.article-body-html h3,
+.article-body-html h4 {
+    color: var(--foreground) !important;
+    background-color: transparent !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+}
+
+.article-body-html a {
+    color: var(--accent) !important;
+    text-decoration: underline !important;
+    word-break: break-all !important;
+}

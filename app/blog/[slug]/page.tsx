@@ -117,7 +117,7 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
                 }}
             />
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6 relative z-10">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 relative z-10 overflow-hidden">
                 {/* Navbar */}
                 <BlogNavbar searchQuery="" onSearchChange={() => {}} />
 
@@ -131,12 +131,12 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
                 </Link>
 
                 {/* Compact Compressed Header Section */}
-                <header className="mb-6 bg-surface/70 border border-dashed border-border rounded-3xl p-5 sm:p-6 shadow-sm">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <header className="mb-6 bg-surface/70 border border-dashed border-border rounded-3xl p-4 sm:p-6 shadow-sm overflow-hidden">
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 sm:gap-6">
                         {/* Left Column: Title, Category, Author */}
                         <div className="flex-1 min-w-0">
                             {/* Category & Meta */}
-                            <div className="flex items-center gap-3 text-xs text-muted font-mono mb-2.5">
+                            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs text-muted font-mono mb-2.5">
                                 <span className="px-2.5 py-0.5 rounded-full bg-accent/15 text-accent font-semibold border border-dashed border-accent/40">
                                     {post.category}
                                 </span>
@@ -149,7 +149,7 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
                             </div>
 
                             {/* Title */}
-                            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground leading-tight mb-3">
+                            <h1 className="text-lg sm:text-2xl font-bold tracking-tight text-foreground leading-tight mb-3 break-words">
                                 {post.title}
                             </h1>
 
@@ -161,10 +161,10 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
                                         alt={post.author.name}
                                         width={32}
                                         height={32}
-                                        className="rounded-full border border-dashed border-accent/50 object-cover"
+                                        className="rounded-full border border-dashed border-accent/50 object-cover shrink-0"
                                     />
                                 ) : (
-                                    <div className="w-8 h-8 rounded-full bg-accent/20 text-accent font-bold flex items-center justify-center text-xs">
+                                    <div className="w-8 h-8 rounded-full bg-accent/20 text-accent font-bold flex items-center justify-center text-xs shrink-0">
                                         {post.author.name.charAt(0)}
                                     </div>
                                 )}
@@ -173,7 +173,7 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
                                     {post.author.role && <p className="text-[11px] text-muted truncate">{post.author.role}</p>}
                                 </div>
                                 {/* Social Links */}
-                                <div className="flex items-center gap-1">
+                                <div className="flex items-center gap-1 shrink-0">
                                     {post.author.github && (
                                         <a href={post.author.github} target="_blank" rel="noopener noreferrer" className="p-1 text-muted hover:text-foreground">
                                             <GithubLogoIcon size={18} />
@@ -190,7 +190,7 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
 
                         {/* Right Column: Compact Cover Image Thumbnail */}
                         {post.coverImage && (
-                            <div className="relative w-full md:w-52 h-36 md:h-32 rounded-2xl overflow-hidden border border-dashed border-border shrink-0 shadow-sm">
+                            <div className="relative w-full md:w-52 h-40 sm:h-36 md:h-32 rounded-2xl overflow-hidden border border-dashed border-border shrink-0 shadow-sm">
                                 <Image
                                     src={post.coverImage}
                                     alt={post.title}
@@ -204,8 +204,8 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
                 </header>
 
                 {/* Main Article Body */}
-                <article className="max-w-none text-foreground leading-relaxed space-y-6">
-                    <div className="text-lg font-medium text-muted border-l-4 border-accent pl-4 py-1 italic mb-8">
+                <article className="max-w-full overflow-hidden break-words text-foreground leading-relaxed space-y-6">
+                    <div className="text-base sm:text-lg font-medium text-muted border-l-4 border-accent pl-3 sm:pl-4 py-1 italic mb-6 sm:mb-8 break-words">
                         {post.summary}
                     </div>
 

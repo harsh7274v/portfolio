@@ -12,17 +12,17 @@ export function MarkdownRenderer({ content, bodyHtml }: MarkdownRendererProps) {
     if (bodyHtml && bodyHtml.trim().length > 0) {
         return (
             <div
-                className="article-body-html prose prose-neutral dark:prose-invert max-w-none text-foreground leading-relaxed space-y-6 
+                className="article-body-html prose prose-neutral dark:prose-invert max-w-full overflow-hidden break-words text-foreground leading-relaxed space-y-6 
                 [&_img]:rounded-2xl [&_img]:border [&_img]:border-dashed [&_img]:border-border [&_img]:my-6 [&_img]:max-h-[550px]:object-cover [&_img]:w-full
-                [&_h1]:text-3xl [&_h1]:font-extrabold [&_h1]:tracking-tight [&_h1]:mt-8 [&_h1]:mb-4
-                [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:text-foreground
-                [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_h3]:text-foreground
-                [&_p]:text-base [&_p]:leading-relaxed [&_p]:text-foreground/90 [&_p]:mb-4
-                [&_a]:text-accent [&_a]:underline [&_a]:font-medium
-                [&_pre]:bg-surface [&_pre]:p-4 [&_pre]:rounded-2xl [&_pre]:border [&_pre]:border-dashed [&_pre]:border-border [&_pre]:overflow-x-auto [&_pre]:my-6
-                [&_code]:font-mono [&_code]:text-sm [&_code]:bg-surface/80 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded-md
-                [&_ul]:list-disc [&_ul]:pl-6 [&_ul]:space-y-2 [&_ul]:my-4
-                [&_ol]:list-decimal [&_ol]:pl-6 [&_ol]:space-y-2 [&_ol]:my-4
+                [&_h1]:text-2xl sm:[&_h1]:text-3xl [&_h1]:font-extrabold [&_h1]:tracking-tight [&_h1]:mt-8 [&_h1]:mb-4
+                [&_h2]:text-xl sm:[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:mt-8 [&_h2]:mb-4 [&_h2]:text-foreground
+                [&_h3]:text-lg sm:[&_h3]:text-xl [&_h3]:font-semibold [&_h3]:mt-6 [&_h3]:mb-3 [&_h3]:text-foreground
+                [&_p]:text-sm sm:[&_p]:text-base [&_p]:leading-relaxed [&_p]:text-foreground/90 [&_p]:mb-4
+                [&_a]:text-accent [&_a]:underline [&_a]:font-medium [&_a]:break-all
+                [&_pre]:bg-surface [&_pre]:p-3 sm:[&_pre]:p-4 [&_pre]:rounded-2xl [&_pre]:border [&_pre]:border-dashed [&_pre]:border-border [&_pre]:overflow-x-auto [&_pre]:my-6 [&_pre]:max-w-full
+                [&_code]:font-mono [&_code]:text-xs sm:[&_code]:text-sm [&_code]:bg-surface/80 [&_code]:px-1.5 [&_code]:py-0.5 [&_code]:rounded-md
+                [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ul]:my-4
+                [&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:space-y-2 [&_ol]:my-4
                 [&_blockquote]:border-l-4 [&_blockquote]:border-accent [&_blockquote]:pl-4 [&_blockquote]:italic [&_blockquote]:text-muted [&_blockquote]:my-6"
                 dangerouslySetInnerHTML={{ __html: bodyHtml }}
             />
