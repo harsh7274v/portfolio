@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import { ArrowLeftIcon, CircleHalfTiltIcon, MagnifyingGlassIcon, XCircleIcon } from "@phosphor-icons/react";
+import { ArrowLeftIcon, CircleHalfTiltIcon, MagnifyingGlassIcon, XCircleIcon, PlusIcon } from "@phosphor-icons/react";
 import { useTheme } from "next-themes";
 
 interface BlogNavbarProps {
@@ -71,8 +71,16 @@ export function BlogNavbar({ searchQuery, onSearchChange, debounceMs = 300 }: Bl
                     )}
                 </div>
 
-                {/* Actions: Theme Switcher */}
-                <div className="flex items-center gap-3 shrink-0">
+                {/* Actions: Write Post & Theme Switcher */}
+                <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                    <Link
+                        href="/blog/create"
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-accent/15 text-accent border border-dashed border-accent/40 text-xs font-semibold hover:bg-accent hover:text-white transition-all duration-200 cursor-pointer"
+                    >
+                        <PlusIcon size={14} />
+                        <span className="hidden sm:inline">Write Post</span>
+                    </Link>
+
                     <button
                         onClick={() => setTheme(isDark ? "light" : "dark")}
                         aria-label="Toggle Theme"

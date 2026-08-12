@@ -93,20 +93,5 @@ Automatically generate SEO title tags, meta descriptions, and hashtag categories
 
 ---
 
-## 🛠️ Quick Start Priority Table
 
-| Feature | Difficulty | API Cost | Impact for Recruiters/Visitors |
-| :--- | :--- | :--- | :--- |
-| **1. AI TL;DR Summarizer** | Low (1-2 hours) | ~$0.001 / summary | ⭐⭐⭐⭐⭐ |
-| **2. Interactive RAG Chatbot** | Medium (3-4 hours) | Low | ⭐⭐⭐⭐⭐ |
-| **3. AI Code Explainer** | Low (1 hour) | ~$0.001 / click | ⭐⭐⭐⭐ |
-| **4. AI Voice Reader** | Low (1 hour) | Free (SpeechAPI) | ⭐⭐⭐⭐ |
-| **5. Semantic Search** | Medium (2-3 hours) | Low | ⭐⭐⭐⭐ |
 
----
-
-## 📖 Recommended Next Steps
-To implement any of these features:
-1. Obtain a **Gemini API Key** (from Google AI Studio - Free Tier available) or **OpenAI API Key**.
-2. Add `GEMINI_API_KEY="your_key"` to `.env.local`.
-3. Create a Next.js API route at `app/api/ai/route.ts` to execute prompts safely on the backend.

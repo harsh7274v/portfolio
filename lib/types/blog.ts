@@ -28,3 +28,5 @@ export interface Category {
     name: string;
     count: number;
 }
+
+export type CategoryOption = "All" | "Tech & AI" | "Web Dev" | "System Design" | "Tutorials" | "Saved" | string;

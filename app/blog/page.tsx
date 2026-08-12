@@ -156,13 +156,13 @@ export default function BlogHubPage() {
                     onSelectCategory={setSelectedCategory}
                 />
 
-                {/* Loading State or Blog Cards Grid */}
+                {/* Loading State or Blog Stacked List */}
                 {isLoading ? (
                     <div className="text-center py-20 bg-surface/40 rounded-3xl border border-dashed border-border mt-6 font-mono text-muted">
                         Can't you wait till i Load something interesting for you
                     </div>
                 ) : filteredBlogs.length > 0 ? (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                    <div className="flex flex-col space-y-4 sm:space-y-5 mt-6 max-w-4xl mx-auto">
                         {filteredBlogs.map((post) => (
                             <BlogCard
                                 key={post.id}

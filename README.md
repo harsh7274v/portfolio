@@ -31,27 +31,48 @@ sequenceDiagram
 
 ## ⚡ How Remote Blog Publishing Works (Without Opening Website)
 
-You can choose one of the following setups so new posts automatically update on your live site:
+### 🚀 Option 1: GitHub Repository as Headless CMS (CONFIGURED & ACTIVE)
+Simply write or push `.md` files to the `content/blogs/` directory in your GitHub repository (`harsh7274v/portfolio`). Next.js fetches them live via GitHub REST API without requiring code changes or website re-deployments!
 
-### Option A: Dev.to API (Easiest - 100% Free & Zero Config)
+1. Create a markdown file in `content/blogs/your-post-title.md`:
+   ```markdown
+   ---
+   title: "Your Article Title"
+   slug: "your-article-title"
+   summary: "Short description of your article."
+   category: "Tech & AI"
+   tags: ["Next.js", "GitHub", "CMS"]
+   publishedAt: "Aug 12, 2026"
+   readTime: "4 min read"
+   coverImage: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe"
+   authorName: "Harsh Vardhan Prasad"
+   authorAvatar: "https://github.com/harsh7274v.png"
+   authorRole: "Fullstack & AI Engineer"
+   authorGithub: "https://github.com/harsh7274v"
+   likesCount: 50
+   ---
+
+   ### Introduction
+
+   Write your article content in standard GitHub-Flavored Markdown here...
+   ```
+2. Commit & Push to GitHub:
+   ```bash
+   git add content/blogs/your-post-title.md
+   git commit -m "Publish new post: Your Article Title"
+   git push origin main
+   ```
+3. Your live website fetches and renders the new article dynamically!
+
+---
+
+### Option B: Dev.to API
 1. Write articles on [Dev.to](https://dev.to).
-2. The website fetches posts from `https://dev.to/api/articles?username=YOUR_USERNAME`.
-3. Every time you hit **Publish** on Dev.to, your website displays the new blog instantly.
+2. Set `NEXT_PUBLIC_DEVTO_USERNAME=YOUR_USERNAME` in `.env.local`.
+3. Every time you hit **Publish** on Dev.to, your website displays the post automatically.
 
-### Option B: Hashnode GraphQL API
-1. Publish articles on your Hashnode publication.
-2. Query Hashnode's GraphQL API (`gql.hashnode.com`) directly in `lib/blogs.ts`.
-3. Articles update in real time with rich markdown formatting and syntax highlighting.
-
-### Option C: Notion Database as CMS
-1. Create a Notion database with columns (`Title`, `Slug`, `Category`, `Summary`, `PublishedDate`).
-2. Add `NOTION_API_KEY` and `NOTION_DATABASE_ID` in `.env.local`.
-3. The site fetches articles directly from your Notion workspace.
-
-### Option D: Headless CMS (Sanity.io / Contentful / Hygraph)
-1. Set up a free Sanity Studio dashboard.
-2. Publish articles using Sanity's visual editor on your phone or browser.
-3. Configure Incremental Static Revalidation (ISR) or client fetching in Next.js.
+### Option C: Notion / Sanity / External Headless CMS
+Configure custom GraphQL or REST endpoints in `lib/blogs.ts`.
 
 ---
 
