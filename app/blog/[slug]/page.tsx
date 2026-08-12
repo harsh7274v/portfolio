@@ -59,7 +59,7 @@ export default function BlogPostDetailPage({ params }: { params: Promise<{ slug:
     if (isLoading) {
         return (
             <div className="min-h-screen bg-main flex items-center justify-center text-muted font-mono">
-                Loading article with TanStack Query...
+                Can't you wait till i Load something interesting for you
             </div>
         );
     }

@@ -159,7 +159,7 @@ export default function BlogHubPage() {
                 {/* Loading State or Blog Cards Grid */}
                 {isLoading ? (
                     <div className="text-center py-20 bg-surface/40 rounded-3xl border border-dashed border-border mt-6 font-mono text-muted">
-                        Loading live articles with TanStack Query...
+                        Can't you wait till i Load something interesting for you
                     </div>
                 ) : filteredBlogs.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
