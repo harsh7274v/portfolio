@@ -5,31 +5,108 @@ import { parseFrontmatter, fetchBlogsFromGitHub, SAMPLE_BLOGS } from "@/lib/blog
 
 export async function GET() {
     try {
+        const postsMap = new Map<string, any>();
+
         // 1. Try reading local content/blogs folder from disk
-        const blogsDir = path.join(process.cwd(), "content", "blogs");
-        if (fs.existsSync(blogsDir)) {
-            const fileNames = fs.readdirSync(blogsDir).filter((file) => file.endsWith(".md"));
-            if (fileNames.length > 0) {
-                const localPosts = fileNames.map((fileName) => {
+        try {
+            const blogsDir = path.join(process.cwd(), "content", "blogs");
+            if (fs.existsSync(blogsDir)) {
+                const fileNames = fs.readdirSync(blogsDir).filter((file) => file.endsWith(".md"));
+                fileNames.forEach((fileName) => {
                     const filePath = path.join(blogsDir, fileName);
                     const fileContent = fs.readFileSync(filePath, "utf-8");
                     const defaultSlug = fileName.replace(/\.md$/, "");
-                    return parseFrontmatter(fileContent, defaultSlug);
+                    const post = parseFrontmatter(fileContent, defaultSlug);
+                    postsMap.set(post.slug, post);
                 });
-                return NextResponse.json(localPosts);
             }
+        } catch (fsErr) {
+            console.warn("Could not read local filesystem blogs:", fsErr);
         }
 
-        // 2. Fallback to live fetching from GitHub REST API
+        // 2. Fetch live from GitHub REST API
         const githubPosts = await fetchBlogsFromGitHub();
         if (githubPosts && githubPosts.length > 0) {
-            return NextResponse.json(githubPosts);
+            githubPosts.forEach((post) => {
+                postsMap.set(post.slug, post);
+            });
+        }
+
+        const allPosts = Array.from(postsMap.values());
+        if (allPosts.length > 0) {
+            return NextResponse.json(allPosts);
         }
     } catch (e) {
         console.error("Error in /api/blogs GET API route:", e);
     }
 
     return NextResponse.json(SAMPLE_BLOGS);
+}
+
+/**
+ * Commits a new or updated blog post markdown file directly to GitHub repo via REST API.
+ * Solves read-only filesystem (EROFS) limitations in serverless environments like Vercel.
+ */
+async function commitBlogToGitHub(
+    slug: string,
+    fileData: string,
+    title: string
+): Promise<{ success: boolean; error?: string }> {
+    const repo = process.env.NEXT_PUBLIC_GITHUB_REPO || "harsh7274v/portfolio";
+    const branch = process.env.NEXT_PUBLIC_GITHUB_BRANCH || "main";
+    const token = process.env.GITHUB_TOKEN || process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+
+    if (!token) {
+        return { success: false, error: "GITHUB_TOKEN environment variable is not configured." };
+    }
+
+    try {
+        const fileUrl = `https://api.github.com/repos/${repo}/contents/content/blogs/${slug}.md`;
+        const headers: Record<string, string> = {
+            Authorization: `Bearer ${token}`,
+            Accept: "application/vnd.github.v3+json",
+            "Content-Type": "application/json",
+            "User-Agent": "Portfolio-App",
+        };
+
+        // Check if file already exists on GitHub to obtain blob sha for update
+        let sha: string | undefined = undefined;
+        try {
+            const checkRes = await fetch(`${fileUrl}?ref=${branch}`, { headers, cache: "no-store" });
+            if (checkRes.ok) {
+                const existingFile = await checkRes.json();
+                sha = existingFile.sha;
+            }
+        } catch {
+            // New file creation
+        }
+
+        const commitBody: Record<string, any> = {
+            message: `feat(blog): publish post "${title}"`,
+            content: Buffer.from(fileData).toString("base64"),
+            branch,
+        };
+        if (sha) {
+            commitBody.sha = sha;
+        }
+
+        const putRes = await fetch(fileUrl, {
+            method: "PUT",
+            headers,
+            body: JSON.stringify(commitBody),
+        });
+
+        if (putRes.ok) {
+            return { success: true };
+        }
+
+        const errJson = await putRes.json();
+        console.error("GitHub API commit error response:", errJson);
+        return { success: false, error: errJson.message || "Failed to commit file to GitHub API." };
+    } catch (e: any) {
+        console.error("Error committing blog post to GitHub API:", e);
+        return { success: false, error: e.message || "GitHub API network error." };
+    }
 }
 
 export async function POST(req: Request) {
@@ -111,13 +188,44 @@ likesCount: 15
 ${content.trim()}
 `;
 
-        const blogsDir = path.join(process.cwd(), "content", "blogs");
-        if (!fs.existsSync(blogsDir)) {
-            fs.mkdirSync(blogsDir, { recursive: true });
+        let publishedViaGithub = false;
+        let githubError: string | undefined = undefined;
+
+        const token = process.env.GITHUB_TOKEN || process.env.NEXT_PUBLIC_GITHUB_TOKEN;
+        if (token) {
+            const ghResult = await commitBlogToGitHub(slug, fileData, title);
+            if (ghResult.success) {
+                publishedViaGithub = true;
+            } else {
+                githubError = ghResult.error;
+            }
         }
 
-        const filePath = path.join(blogsDir, `${slug}.md`);
-        fs.writeFileSync(filePath, fileData, "utf-8");
+        // Try writing to local disk (works in local dev; fails gracefully on serverless EROFS)
+        let fsWritten = false;
+        try {
+            const blogsDir = path.join(process.cwd(), "content", "blogs");
+            if (!fs.existsSync(blogsDir)) {
+                fs.mkdirSync(blogsDir, { recursive: true });
+            }
+
+            const filePath = path.join(blogsDir, `${slug}.md`);
+            fs.writeFileSync(filePath, fileData, "utf-8");
+            fsWritten = true;
+        } catch (fsErr: any) {
+            console.warn("Local filesystem write failed (expected in read-only serverless environment):", fsErr.message);
+        }
+
+        if (!publishedViaGithub && !fsWritten) {
+            const errorMessage = !token
+                ? "Serverless deployment filesystem is read-only (EROFS). Please add 'GITHUB_TOKEN' to your Vercel Project Environment Variables to enable automated blog publishing via GitHub API."
+                : `Failed to save post: Read-only serverless filesystem (EROFS) and GitHub commit failed (${githubError || "Unknown error"}).`;
+
+            return NextResponse.json(
+                { error: errorMessage },
+                { status: 500 }
+            );
+        }
 
         const newPost = parseFrontmatter(fileData, slug);
 
@@ -125,7 +233,9 @@ ${content.trim()}
             success: true,
             slug,
             post: newPost,
-            message: "Blog post published successfully!",
+            message: publishedViaGithub
+                ? "Blog post published and committed to GitHub repository successfully!"
+                : "Blog post published successfully!",
         });
     } catch (e: any) {
         console.error("Error in /api/blogs POST API route:", e);
